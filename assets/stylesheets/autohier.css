@@ -1,0 +1,8 @@
+#wiki_page_parent_id {
+  display: none;
+}
+
+label[for=wiki_page_parent_id]
+{
+  display: none;
+}

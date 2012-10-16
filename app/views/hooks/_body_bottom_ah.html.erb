@@ -1,0 +1,10 @@
+<% if controller and controller.class.name == 'WikiController' and controller.action_name == "show" and @page and @page.id and @page.visible? %>
+
+   <%= breadcrumb(@page.ancestors.reverse.collect {|parent| link_to h(parent.short_title), {:id => parent.title, :project_id => parent.project}}) %>
+
+  <script type="text/javascript">
+      $$('.breadcrumb')[0].style.display="none"
+      $$('.breadcrumb')[0].insert({'before':$$('.breadcrumb')[1]})
+  </script>
+
+<% end %>
