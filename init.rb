@@ -1,5 +1,5 @@
 require 'redmine'
-require 'autohier/hook'
+require 'autohier_hook'
 
 # Apply the wiki page patch
 #require 'wiki_page_patch'
@@ -8,21 +8,17 @@ require 'dispatcher' unless Rails::VERSION::MAJOR >= 3
 
 if Rails::VERSION::MAJOR >= 3
   ActionDispatch::Callbacks.to_prepare do
-    unless WikiPage.included_modules.include? Autohier::WikiPageAh
-      WikiPage.send(:include, Autohier::WikiPageAh)
-    end
-    unless ApplicationHelper.included_modules.include? Autohier::ApplicationHelperAh
-      ApplicationHelper.send(:include, Autohier::ApplicationHelperAh)
-    end
+      require_dependency 'wiki_page'
+      WikiPage.send(:include, WikiPagePatch)
+      require_dependency 'application_helper'
+      ApplicationHelper.send(:include, ApplicationHelperPatch)
   end
 else
   Dispatcher.to_prepare :redmine_autohier do
-    unless WikiPage.included_modules.include? Autohier::WikiPageAh
-      WikiPage.send(:include, Autohier::WikiPageAh)
-    end
-    unless ApplicationHelper.included_modules.include? Autohier::ApplicationHelperAh
-      ApplicationHelper.send(:include, Autohier::ApplicationHelperAh)
-    end
+      require_dependency 'wiki_page'
+      WikiPage.send(:include, WikiPagePatch)
+      require_dependency 'application_helper'
+      ApplicationHelper.send(:include, ApplicationHelperPatch)
   end
 end
 
