@@ -3,7 +3,7 @@ module WikiPagePatch
     base.send(:include, InstanceMethods)
     base.extend(ClassMethods)
     base.class_eval do |mod|
-      alias_method_chain :handle_redirects, :autohier
+      alias_method_chain :handle_rename_or_move, :autohier
       after_save   :after_save
     end
   end
@@ -11,7 +11,7 @@ module WikiPagePatch
   module InstanceMethods
 	      
     # Automatically set the parent page.
-    def handle_redirects_with_autohier
+    def handle_rename_or_move_with_autohier
       self.title = Wiki.titleize(title)    
 		
       # Set the parent page by '>'s in the title
@@ -30,7 +30,7 @@ module WikiPagePatch
       end
 		
       # Call the original before_save (redirection management etc)
-      handle_redirects_without_autohier
+      handle_rename_or_move_without_autohier
     end
 
     # Move all decendant pages after save
